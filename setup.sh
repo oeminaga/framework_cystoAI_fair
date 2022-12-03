@@ -52,3 +52,6 @@ cp RemovePHI.py ../$varname/Scripts/RemovePHI.py
 cp ExtractData.py ../$varname/Scripts/ExtractData.py
 cp DataSummarization.Rmd ../$varname/DataSummarization.Rmd
 cp Databases.Rproj ../$varname/$varname.Rproj
+cp validation.json ../$varname/Scripts/validation.json
+cp Validation.py ../$varname/Scripts/Validation.py 
+cp utils.py ../$varname/Scripts/utils.py
