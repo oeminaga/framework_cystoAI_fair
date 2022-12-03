@@ -1,0 +1,34 @@
+{
+    "CystoscopyImages" : {
+        "CML" : "string",
+        "IND" : ["O", "C"],
+        "DATE" : "%m%d%Y",
+        "Splitter" : "_", 
+        "ContainerSplitter" : " ",
+        "Identification": {
+            "PAT":["STOP",[]],
+            "L": ["nummeric", ["Location", "ImageModality", "Pathology", "Stage"]],
+            "MAP":["STOP",[]],
+            "OP": ["STOP",[]]
+        },
+        "Location": ["Ant", "L Ant", "R Ant","Dome", "L Dome", "R Dome", "L Lat", "R Lat","Pos", "L Pos", "R Pos" ,"Trig", "L Trig","R Trig", "L UO", "R UO", "Prostate", "L Prostate","R Prostate", "U", "Ureter", "L Ureter", "R Ureter", "BN"],
+        "ImageModality": ["WLC", "-WLC", "+WLC","BLC","+BLC","-BLC" ,"CLE", "NBI", "H", "H100", "H100PAX8", "H200", "H200CK20", "H200p53", "H40","H400", "H40PAX8", "H40p63", "UVP", "CT", "MRT"],
+        "Pathology":["B", "LG", "HG", "AtypicalProliferation", "CystitisCystica","CystitisGlandularis","BladderWallTrabuclation","SuppurativeCystitis", "UlcerativeCystitis", "ChronicCystitis","FollicularCystitis", "VesicovaginalFistula","BladderNeckObstruction","BladderStone", "BladderDiverticulum", "PolypoidCystitis","HemorrhagicCystitis.","GranulomatousCystitis","EosinophilicCystitis","DrugInducedCystitis","RadiationCystitis","ForeignBodyCystitis","ChemicalCystitis","InterstitialCystitis", "FPBLC","Fibrosis" , "PUNLMP","UPUMP","focal", "GranulationTissue", "Inflammation", "InflammationNOS", "IntestinalMetaplasia", "Malakoplakia","Melanosis", "MildInflammation", "NephrogenicAdenoma","NoBiopsy", "NA", "PolypoidCystitis", "Papilloma", "PostResection", "ProcedureSiteChanges", "SquamousMetaplasia", "reactiveChanges", "NA"],
+        "Stage":["NA","T0", "Ta","TIS","T1", "T2", "T2a", "T2b", "T3", "T3a", "T3b","T4", "T4a", "T4b"],
+        "MoveWheMeetThePolicyTo" : ["RequireApproval"],
+        "FolderArchitecture" : ["images", "videos"],
+        "FolderNameFormat": ["CML", "IND", "DATE"],
+        "FolderNameSplitter": "_",
+        "CheckFolder": true,
+        "VideoNameFormat": ["CML", "IND", "DATE"],
+        "VideoNameSplitter": "_",
+        "VideoFolder" : ["videos"],
+        "CheckVideoFileNameormat": true,
+        "SupportedVideoFormat": ["mp4", "mov","mpg"],
+        "ImageFolder" : ["images"],
+        "MinImageFileNameFormat" : ["CML", "IND", "DATE", "Identification"],
+        "MaxImageFileNameFormat" : ["CML", "IND", "DATE", "Identification","Location", "ImageModality", "Pathology","Stage"],
+        "SupportedImageFormat": ["png", "jpg", "bmp"],
+        "CheckImageFileNameFormat": true
+    }
+}

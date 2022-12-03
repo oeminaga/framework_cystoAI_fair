@@ -1,11 +1,13 @@
 #%%
 from collections import defaultdict
+from ctypes import util
 from numpy import isin
 import pandas as pd
 import os
 import json
 import datetime
 import shutil
+import utils
 from tqdm import tqdm
 #%%
 class Validation():
@@ -81,7 +83,7 @@ class Validation():
                 return "the case folder does not meet folder architecture",reports
             
             
-            itms = folder.split("/")[-1].split(self.policy[policy_name]["FolderNameSplitter"])
+            itms = folder.split(os.sep)[-1].split(self.policy[policy_name]["FolderNameSplitter"])
             if len(itms) != len(self.policy[policy_name]["FolderNameFormat"]):
                 reports["FOLDER"].append(folder)
                 reports["Filename"].append("")
@@ -215,8 +217,69 @@ class Validation():
 
         pd.DataFrame(report_collector).to_csv("ValidationReport_Files.csv")
 
+class ValidationEntryData():
+    supported_fileformat_for_images = ['png', 'jpg', 'bmp', "jpeg", "tif", "tiff", "gif","dec"]
+    supported_fileformat_for_videos = ["mpg", "mpeg", "avi",'mp4', "mp3", "mov"]
+    exclude_fileformat = ["DS_Store"]
+    def __init__(self, case_id,folder, destination) -> None:
+        self.folder =folder
+        self.destination = destination
+        self.case_id =case_id
+        files = os.listdir(folder)
+        self.images = []
+        self.videos=[]
+        self.other = []
+        def CheckFileExtension(fl, list_to_consider ,extensions):
+            for ending in extensions:
+                if fl.lower().endswith(ending):
+                    list_to_consider.append(fl)
+                    return True
+            return False
+        def ShouldBeExcluded(fl, list_to_consider, exclude_fileformat):
+            for ending in exclude_fileformat:
+                if not fl.lower().endswith(ending):
+                    list_to_consider.append(fl)
+                    return True
+            return False
+
+        while len(files):
+            fl=files.pop()
+            the_next_file=False
+            if CheckFileExtension(fl, self.images, self.supported_fileformat_for_images):
+                    continue
+            if CheckFileExtension(fl, self.videos, self.supported_fileformat_for_videos):
+                    continue
+            if ShouldBeExcluded(fl,self.other, self.exclude_fileformat):
+                    continue
+    def Check(self):
+        check_list ={}
+        check_list["images"]=len(self.images)
+        check_list["videos"]=len(self.videos)
+        check_list["other"]=len(self.other)
+        self.ImageQualityScores = []
+        for fl in self.images:
+            filename = f"{self.folder}/{fl}"
+            self.ImageQualityScores.append([fl,utils.GetImageQualityScore(filename)])
+
+        case_id_already_in_database = 0
+        if self.destination=="" or self.case_id=="":
+            case_id_already_in_database=0
+        elif os.path.exists(f"../Data/{self.destination}/{self.case_id}"):
+            case_id_already_in_database=1
+        check_list["DestinationStatus"]=case_id_already_in_database
+        return check_list
+    def PrepareTheCaseToCopy(self):
+        self.file_list= []
+        for fl in self.images:
+            #source, dest.
+            self.file_list.append([f"{self.folder}/{fl}",f"../Data/{self.destination}/{self.case_id}/Images/{self.case_id}_{fl}"])
+        for i, fl in enumerate(self.videos):
+            file_endings=fl.split(".")[1]
+            self.file_list.append([f"{self.folder}/{fl}",f"../Data/{self.destination}/{self.case_id}/Videos/{self.case_id}_R{i}.{file_endings}"])
+        for fl in self.other:
+            self.file_list.append([f"{self.folder}/{fl}",f"../Data/{self.destination}/{self.case_id}/Other/{self.case_id}_{fl}"])
 # %%
-test_unit=True
+test_unit=False
 if test_unit:
     val=Validation("../Data")
     val.RunValidation()
