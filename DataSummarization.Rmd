@@ -1,0 +1,161 @@
+---
+title: "Data summarization"
+---
+
+```{r}
+library(tidyr)
+library(plotrix)
+library(gt)
+library(stringr)
+library(dplyr)
+```
+
+# Summary
+
+```{r}
+data=read.csv( "./Data/SummaryReportImages.csv" )
+print(paste("unique pts.", length(unique(data$ID))))
+print(paste("unique cases", length(unique(data$CASE_ID))))
+
+```
+
+```{r}
+summary_at_case_level= data %>%
+	group_by(ID) %>% distinct(CASE_ID) %>% count()
+#summary_at_case_level
+print(paste("total case .:", sum(as.numeric(summary_at_case_level$n))))
+print(paste("median no. cases per pts:", median(as.numeric(summary_at_case_level$n))))
+v=c(min(as.numeric(summary_at_case_level$n)),max(as.numeric(summary_at_case_level$n)))
+print(paste("min - max:",v[1], "-", v[2]))
+```
+
+# At lesion level
+
+Lesions captured by WLC or BLC
+
+```{r}
+summary_at_case_level= data[data$IDENTIFICATION %in% c(1:20),] %>%
+	group_by(CASE_ID) %>% filter(ImageModality %in% c("BLC", "WLC")) %>% distinct(IDENTIFICATION) %>%  count(CASE_ID)
+#summary_at_case_level
+print(paste("no. lesion:", sum(as.numeric(summary_at_case_level$n))))
+print(paste("median no. lesion per case:", median(as.numeric(summary_at_case_level$n))))
+v=quantile(as.numeric(summary_at_case_level$n), c(0.25, 0.75))
+print(paste("IQR:",v[1], "-", v[2]))
+v=c(min(as.numeric(summary_at_case_level$n)),max(as.numeric(summary_at_case_level$n)))
+print(paste("min - max:",v[1], "-", v[2]))
+```
+
+```{r}
+summary_at_case_level= data[data$IDENTIFICATION %in% c(1:40),] %>%
+	group_by(CASE_ID) %>% filter(ImageModality %in% c("BLC", "WLC", "+BLC", "-BLC", "-WLC","+WLC")) %>% group_by(IDENTIFICATION)
+summary_at_case_level$ID_LESION = paste0(summary_at_case_level$CASE_ID, summary_at_case_level$IDENTIFICATION)
+summary_info=summary_at_case_level[!duplicated(summary_at_case_level$ID_LESION),]
+print(paste("No of lesions:", nrow(summary_info)))
+
+print(paste("No of lesions with Pathology info:",length(summary_info$PATHOLOGY[summary_info$PATHOLOGY!="" & !is.na(summary_info$PATHOLOGY)])))#130
+
+output_=data.frame(table(tolower(str_split(summary_info$PATHOLOGY[summary_info$PATHOLOGY!="" & !is.na(summary_info$PATHOLOGY)], " ", simplify = T))))
+output_[output_$Var1 != "",] %>% gt()
+print(paste("entities, n:",sum(output_$Freq[output_$Var1 != ""])))
+
+output_=data.frame(table(summary_info$STAGE[summary_info$STAGE!=""]))
+
+print(paste("lesions w. path stages, n:",sum(output_$Freq[output_$Var1 != ""])))
+
+output_[output_$Var1 != "",] %>% gt()
+pie(output_$Freq, labels = output_$Var1)
+```
+
+```{r}
+summary_at_case_level= data[data$IDENTIFICATION %in% c(1:20),] %>%
+	group_by(CASE_ID) %>% filter(ImageModality %in% c("BLC", "WLC", "+BLC", "-BLC", "-WLC","+WLC"))
+summary_at_case_level$ID_LESION = paste0(summary_at_case_level$CASE_ID, summary_at_case_level$IDENTIFICATION)
+
+x=data.frame(table(summary_at_case_level$ID_LESION))
+
+print(paste("images per lesion, n (median):", median(x$Freq)))
+v=quantile(as.numeric(x$Freq), c(0.25, 0.75))
+print(paste("images per lesion, n (IQR):", v[1], "-", v[2]))
+
+v=c(min(as.numeric(x$Freq)),max(as.numeric(x$Freq)))
+print(paste("min - max:",v[1], "-", v[2]))
+
+
+x=data.frame(table(summary_at_case_level$ID_LESION[summary_at_case_level$ImageModality %in% c("WLC", "+WLC", "-WLC")]))
+
+print(paste("WLC images per lesion, n (median):", median(x$Freq)))
+v=quantile(as.numeric(x$Freq), c(0.25, 0.75))
+print(paste("WLC images per lesion, n (IQR):", v[1], "-", v[2]))
+
+v=c(min(as.numeric(x$Freq)),max(as.numeric(x$Freq)))
+print(paste("min - max:",v[1], "-", v[2]))
+
+
+x=data.frame(table(summary_at_case_level$ID_LESION[summary_at_case_level$ImageModality %in% c("BLC", "+BLC", "-BLC")]))
+print(paste("BLC images per lesion, n (median):", median(x$Freq)))
+v=quantile(as.numeric(x$Freq), c(0.25, 0.75))
+print(paste("BLC images per lesion, n (IQR):", v[1], "-", v[2]))
+
+v=c(min(as.numeric(x$Freq)),max(as.numeric(x$Freq)))
+print(paste("min - max:",v[1], "-", v[2]))
+```
+
+Lesions captured by WLC
+
+```{r}
+summary_at_case_level= data[data$IDENTIFICATION %in% c(1:20),] %>%
+	group_by(CASE_ID) %>% filter(ImageModality=="WLC") %>% distinct(IDENTIFICATION) %>%  count(CASE_ID)
+#summary_at_case_level
+print(paste("no. lesion:", sum(as.numeric(summary_at_case_level$n))))
+print(paste("median no. lesion per case:", median(as.numeric(summary_at_case_level$n))))
+v=quantile(as.numeric(summary_at_case_level$n), c(0.25, 0.75))
+print(paste("IQR:",v[1], "-", v[2]))
+
+v=c(min(as.numeric(summary_at_case_level$n)),max(as.numeric(summary_at_case_level$n)))
+print(paste("min - max:",v[1], "-", v[2]))
+```
+
+Lesions captured by BLC
+
+```{r}
+summary_at_case_level= data[data$IDENTIFICATION %in% c(1:20),] %>%
+	group_by(CASE_ID) %>% filter(ImageModality=="BLC") %>% distinct(IDENTIFICATION) %>%  count(CASE_ID)
+#summary_at_case_level
+print(paste("no. lesion:", sum(as.numeric(summary_at_case_level$n))))
+print(paste("median no. lesion per case:", median(as.numeric(summary_at_case_level$n))))
+v=quantile(as.numeric(summary_at_case_level$n), c(0.25, 0.75))
+print(paste("IQR:",v[1], "-", v[2]))
+v=c(min(as.numeric(summary_at_case_level$n)),max(as.numeric(summary_at_case_level$n)))
+print(paste("min - max:",v[1], "-", v[2]))
+```
+
+# Images
+
+```{r}
+IDENT=data$IDENTIFICATION
+IDENT[IDENT %in% c("Path1")] = "Path"
+IDENT[IDENT %in% c("OP1")] = "OP"
+IDENT[IDENT %in% c("OP2","OP3", "Path2", "0")]= ""
+for (i in c(1:6)){
+  IDENT[IDENT==i]= paste("lesion", i)
+}
+data.frame(table(IDENT[IDENT!=""])) %>% gt()
+```
+
+```{r}
+data.frame(table(data$ImageModality[data$ImageModality!=""])) %>% gt()
+```
+
+```{r}
+output_=data.frame(table(tolower(str_split(data$PATHOLOGY[data$PATHOLOGY!=""], " ", simplify = T))))
+output_[output_$Var1 != "",] %>% gt()
+```
+
+```{r}
+output_=data.frame(table(tolower(str_split(data$STAGE[data$STAGE!=""], " ", simplify = T))))
+pie(output_$Freq, labels = output_$Var1)
+```
+
+```{r}
+output_[output_$Var1 != "",] %>% gt()
+```

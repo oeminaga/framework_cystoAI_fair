@@ -1,0 +1,9 @@
+tqdm
+PILLOW
+pandas
+python-pptx
+ttkwidgets
+matplotlib
+tkcalendar
+image-quality
+numpy
