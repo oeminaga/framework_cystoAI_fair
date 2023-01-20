@@ -22,27 +22,33 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import pytesseract
-from PIL import Image
-import numpy as np
-import cv2
 import pandas as pd
-import matplotlib.pyplot as plt
-from tqdm import tqdm
+import os
 #%%
-data=pd.read_csv("../Data/SummaryReportImages.csv")
+#Get
+#1. Check if SummaryReportImagesWithTextForPathOP exits to use otherwise conisder SummaryReportImages
+data  = None
+filename="../Data/SummaryReportImagesWithTextForPathOP.csv"
+if not os.path.exists(filename):
+    filename="../Data/SummaryReportImages.csv"
+data=pd.read_csv(filename)
+data=data.drop(["Unnamed: 0"], axis=1)
 #%%
-Texts = []
-for i, row in tqdm(data.iterrows()):
-    if row.IDENTIFICATION.lower() in ["path", "op", "path2","path1", "op1", "op2", "op3"]:
-        img=cv2.imread(row.FullPath)
-        img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        custom_config = r'--oem 3 --psm 6'
-        text_b=pytesseract.image_to_string(img, config=custom_config)
-        Texts.append(text_b)
-    else:
-        Texts.append("")
-#%%
-data["TEXT"]=Texts
-data.to_csv("../Data/SummaryReportImagesWithTextForPathOP.csv", index=False)
-# %%
+cMDX_Report = pd.read_csv("ReportCasesWithcMDXFils.csv")
+#ID	IND	DATE	IDENTIFICATION	LOCATION	ImageModality	PATHOLOGY	STAGE	Filename	FullPath	CASE_ID	TEXT
+#,CML,DATE,CaseID,cMDX_Filename,cMDX_FilePath
+for i, itm in cMDX_Report.iterrows():
+    row ={"ID":[str(itm.CML)], 
+    "IND": ["O"], 
+    "DATE": [str(itm.DATE)],
+    "IDENTIFICATION": ["cMDX_MAP"], 
+    "LOCATION": [""], 
+    "ImageModality":[""],
+    "PATHOLOGY":[""],
+    "STAGE": [""], 
+    "Filename": [itm.cMDX_Filename], 
+    "FullPath": [itm.cMDX_FilePath],
+    "CASE_ID" : [itm.CaseID],
+    "TEXT":[""]}
+    data=data.append(pd.DataFrame(row))
+data.to_csv("../Data/SummaryReportImagesWithTextForPathOPAndcMDX.csv", index=False)

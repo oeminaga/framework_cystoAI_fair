@@ -7,3 +7,5 @@ matplotlib
 tkcalendar
 image-quality
 numpy
+opencv-python
+pytesseract

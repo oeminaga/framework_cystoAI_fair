@@ -22,27 +22,16 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-import pytesseract
-from PIL import Image
-import numpy as np
-import cv2
+from collections import defaultdict
+from numpy import isin
 import pandas as pd
-import matplotlib.pyplot as plt
+import os
+import json
+import datetime
+import shutil
 from tqdm import tqdm
+from Validation import Validation
+
 #%%
-data=pd.read_csv("../Data/SummaryReportImages.csv")
-#%%
-Texts = []
-for i, row in tqdm(data.iterrows()):
-    if row.IDENTIFICATION.lower() in ["path", "op", "path2","path1", "op1", "op2", "op3"]:
-        img=cv2.imread(row.FullPath)
-        img=cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        custom_config = r'--oem 3 --psm 6'
-        text_b=pytesseract.image_to_string(img, config=custom_config)
-        Texts.append(text_b)
-    else:
-        Texts.append("")
-#%%
-data["TEXT"]=Texts
-data.to_csv("../Data/SummaryReportImagesWithTextForPathOP.csv", index=False)
-# %%
+val=Validation("../Data")
+val.RunValidation()

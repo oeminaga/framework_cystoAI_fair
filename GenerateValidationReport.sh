@@ -1,1 +1,1 @@
-python3 Validation.py
+python3 CheckFiles.py

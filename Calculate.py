@@ -1,5 +1,28 @@
 #%%
- #!/usr/bin/env python3
+#!/usr/bin/env python3
+"""
+MIT License
+
+Copyright (c) 2023 Okyaz Eminaga
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 from enum import unique
 from itertools import count
 import os
@@ -7,7 +30,6 @@ from collections import defaultdict
 from tqdm import tqdm
 import numpy as np
 import pandas as pd
-#Cysview_BLC_Registry_2016_2018 or CystoNetDatabase_2019_Current
 #%% MODIFY HERE the folder to search
 #############
 # ONLY CHANGE HERE
@@ -78,8 +100,8 @@ for folder_ in folders_to_search:
     folders_to_search_case = [f"{folder}/{f}" for f in os.listdir(folder) if os.path.isdir(f"{folder}/{f}")]
     print(folder," | cases no.:",len(folders_to_search_case))
     try:
-        cases=[(f.split("/")[-1].split("_")[0]) for f in folders_to_search_case]
-        complete_foldername=[f.split("/")[-1].split("_") for f in folders_to_search_case]
+        cases=[(f.split(os.sep)[-1].split("_")[0]) for f in folders_to_search_case]
+        complete_foldername=[f.split(os.sep)[-1].split("_") for f in folders_to_search_case]
         patients = set(cases)
         
         for pt in patients:
@@ -114,5 +136,4 @@ print("Total no. pat.",len(data_table["NoOfCases"]))
 print("*"*10)
 data_table_B=pd.DataFrame(data_table)
 data_table_B.to_csv(f"{folder_to_search}/{folder_to_search}_PatientSummary.csv", index=False)
-data_table_B
 # %%

@@ -1,4 +1,27 @@
- #!/usr/bin/env python3
+#!/usr/bin/env python3
+"""
+MIT License
+
+Copyright (c) 2023 Okyaz Eminaga
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 import tkinter as tk
 from tkinter import ttk
 from tkinter import *  
@@ -10,7 +33,42 @@ import os
 import datetime
 import pandas as pd
 from tkinter import filedialog
+os.chdir(os.path.dirname(__file__))
 class InputWindow(object):
+    def FindInfo(self,var, index, mode):
+        keylesion = self.lesion_id.get()
+        if keylesion=="":
+            return
+        keylesions = keylesion.split("-")
+        if len(keylesions)>1:
+            keylesion=keylesions[0]
+        check_it =[self.selected_Location,
+                    self.selected_PATHOLOGY, self.selected_Stage]
+        GetData = False
+        for itm in check_it:
+            if itm.get().lower()=="":
+                GetData=True
+        if GetData==False:
+            return
+        for file in self.files:
+            filename = os.path.basename(file)
+            items = filename.split(".")[0].split("_")
+            to_fill=[self.cml_text, self.selected_IND,
+                    self.dateValue, self.lesion_id, 
+                    self.selected_Location, self.selected_ImageModality,
+                    self.selected_PATHOLOGY, self.selected_Stage]
+
+            if len(items)<4:
+                return
+            key_name =items[3] 
+            if "-" in key_name:
+                key_name = key_name.split("-")[0]
+            if key_name.lower()==keylesion.lower():
+                for i in range(len(items)):
+                    if i >3 and i!=5:
+                        to_fill[i].set(items[i])
+                return
+
     def __init__(self, folder_path) -> None:
         self.folder_path= folder_path
         self.selected_index = -1
@@ -101,7 +159,7 @@ class InputWindow(object):
                     to_fill[i].set("")
         image=Image.open(selected_langs)
         h,w=image.size
-        image=image.resize((h//2,w//2))
+        image=image.resize((h//4,w//4))
         img2 = ImageTk.PhotoImage(image)
         self.panel.configure(image=img2)
         self.panel.image = img2
@@ -212,6 +270,9 @@ class InputWindow(object):
         path_of_file = os.path.split(selected_langs)[0]
         extension = os.path.splitext(os.path.basename(selected_langs))[1]
         new_filename=f"{path_of_file}/{filename}{extension}"
+        if os.path.exists(new_filename):
+            showinfo("File is the similar label information exist.\nPlease check the correctness and avoid duplication!")
+            return
         os.rename(selected_langs, new_filename)
 
         if self.folder_path[-3:]=="csv":
@@ -292,6 +353,7 @@ class InputWindow(object):
         self.root = tk.Tk()
         self.cml_text = tk.StringVar()
         self.lesion_id = tk.StringVar()
+        self.lesion_id.trace_add("write", self.FindInfo)
         self.selected_IND = tk.StringVar()
         self.selected_IND.trace_add("write", self.CheckIND)
         self.dateValue = tk.StringVar()
