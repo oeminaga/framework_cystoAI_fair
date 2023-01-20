@@ -14,27 +14,6 @@ Please use the terminal to run the setup file.
 
 After installation, you can run main.sh for Linux and Mac and main.bat for Windows to get to the main window.
 
-MacOS/Linux:
-Download packages
--	sh install_packages.sh
-To update summary csv files
--	sh UpdateData.sh > output.txt
-To run labeling program
--	sh RunLabeling.sh
-To generate PowerPoint presentations
--	sh GeneratePPTForCases.sh
-
-Windows:
-Download packages
--	install_packages.bat
-To update summary csv files
--	UpdateData.bat > output.txt
-To run labeling program
--	RunLabeling.bat
-To generate PowerPoint presentations
--	GeneratePPTForCases.bat
-
-
 Should you have issues, please open a thread in the issue section.
 
 For citation, please use:
