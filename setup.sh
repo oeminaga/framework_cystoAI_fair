@@ -70,3 +70,5 @@ cp utils.py ../$varname/Scripts/utils.py
 cp validation.json ../$varname/Scripts/validation.json
 cp Validation.py ../$varname/Scripts/Validation.py
 cp ExtractData.py ../$varname/Scripts/ExtractData.py
+
+chmod 755 ../$varname/Scripts/main.sh

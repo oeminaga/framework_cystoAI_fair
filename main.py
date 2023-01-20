@@ -61,7 +61,7 @@ class InputWindow(object):
         showinfo("Finished", "Report generation is completed.")
         self.pb1['value'] = 0
     def ExportCases(self):
-        os.system("python DataSharing.py")
+        os.system("python3 DataSharing.py")
     def create_main_window(self):
         flx=__file__.split(os.sep)[-3]
         self.root =tk.Tk()
