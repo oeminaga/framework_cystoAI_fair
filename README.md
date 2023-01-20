@@ -12,6 +12,8 @@ If you want to setup a new data container, please use the setup.sh or setup.bat 
  
 Please use the terminal to run the setup file.
 
+After installation, you can run main.sh for Linux and Mac and main.bat for Windows to get to the main window.
+
 MacOS/Linux:
 Download packages
 -	sh install_packages.sh
