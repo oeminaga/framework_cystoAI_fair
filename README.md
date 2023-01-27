@@ -19,3 +19,4 @@ Should you have issues, please open a thread in the issue section.
 
 For citation, please use:
 
+Eminaga, Okyaz, et al. "Conceptual Framework and Documentation Standards of Cystoscopic Media Content for Artificial Intelligence." arXiv e-prints (2023): arXiv-2301.
