@@ -1,9 +1,9 @@
 # Conceptual Framework and Documentation Standards of Cystoscopic Media Content for Artificial Intelligence
 
 General requirements:
-Visual Studio Code
-Python 3.9
-Cloud/Network/Local drive
+-Visual Studio Code
+-Python 3.9
+-Cloud/Network/Local drive
 
 Please place this folder in the (cloud) netwrok drive where you want to store our cystoscopy media content.
 
