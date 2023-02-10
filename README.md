@@ -5,7 +5,7 @@ General requirements:</br>
 - Python 3.9
 - Cloud/Network/Local drive
 
-Please place the setup folder in the cloud/network/local drive where you want to store our cystoscopy media content.
+Please place the setup folder in the cloud/network/local drive where you want to store the cystoscopy media content.
 
 If you want to setup a new data container, please use the setup.sh or setup.bat in the setup folder and follow the instruction given on the screen.
  
