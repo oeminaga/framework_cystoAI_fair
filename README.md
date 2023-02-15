@@ -1,4 +1,4 @@
-# Conceptual Framework and Documentation Standards of Cystoscopic Media Content for Artificial Intelligence
+# Conceptual Framework and Documentation Standards of Cystoscopic Media Content for Artificial Intelligence based on FAIR principles.
 
 General requirements:</br>
 - Visual Studio Code
