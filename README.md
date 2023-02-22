@@ -3,6 +3,7 @@
 General requirements:</br>
 - Visual Studio Code
 - Python 3.9
+- R studio
 - Cloud/Network/Local drive
 
 Please place the setup folder in the cloud/network/local drive where you want to store the cystoscopy media content.
