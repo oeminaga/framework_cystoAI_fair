@@ -16,6 +16,8 @@ After installation, you can run main.sh for Linux and Mac and main.bat for Windo
 
 If you want to extract textual informations from image copies of pathology and surgery reports, please first install tesseract (MacOS: brew install tesseract; Windows: https://codetoprosper.com/tesseract-ocr-for-windows; Ubuntu: https://tesseract-ocr.github.io/tessdoc/Installation.html) and then run ReadTextFromImage.py.It is important to tag these image copies with "path", "op", "path2","path1", "op1", "op2" or "op3" so that they can be recognized by the framework.
 
+If you want to generate a powerpoint presentation using the image material for each case, please run GeneratePPTForCases.bat on Windows or GeneratePPTForCases.sh on Linux or Mac.
+
 Should you have issues, please open a thread in the issue section.
 
 For citation, please use:
