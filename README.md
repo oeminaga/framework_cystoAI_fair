@@ -21,5 +21,4 @@ If you want to generate a powerpoint presentation using the image material for e
 Should you have issues, please open a thread in the issue section.
 
 For citation, please use:
-
-Eminaga, Okyaz, et al. "Conceptual Framework and Documentation Standards of Cystoscopic Media Content for Artificial Intelligence." arXiv e-prints (2023): arXiv-2301.
+Eminaga, O., Jiyong Lee, T., Ge, J., Shkolyar, E., Laurie, M., Long, J., Graham Hockman, L., & Liao, J. C. (2023). Conceptual Framework and Documentation Standards of Cystoscopic Media Content for Artificial Intelligence. Journal of Biomedical Informatics, 104369. https://doi.org/10.1016/j.jbi.2023.104369
