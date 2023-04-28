@@ -18,6 +18,8 @@ If you want to extract textual informations from image copies of pathology and s
 
 If you want to generate a powerpoint presentation using the image material for each case, please run GeneratePPTForCases.bat on Windows or GeneratePPTForCases.sh on Linux or Mac.
 
+Please be aware this framework covers only the backend solution. You can easily build a front-end solution upon this using meta-data that facilitates FAIR principles.
+
 Should you have issues, please open a thread in the issue section.
 
 For citation, please use:</br>
